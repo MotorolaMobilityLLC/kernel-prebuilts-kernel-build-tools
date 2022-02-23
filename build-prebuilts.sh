@@ -28,6 +28,7 @@ EOF
         abitidy
         avbtool
         blk_alloc_to_base_fs
+        btfinfo
         build_image
         build_super_image
         depmod
@@ -35,14 +36,20 @@ EOF
         e2fsck
         e2fsdroid
         img2simg
+        interceptor
+        interceptor_analysis
         lpmake
         lz4
         mkbootfs
         mkdtboimg.py
+        mkdtimg
         mke2fs
+        mkfs.erofs
         mkuserimg_mke2fs
         pahole
         simg2img
+        soong_zip
+        stgdiff
         swig
         tune2fs
         ufdt_apply_overlay
@@ -51,6 +58,7 @@ EOF
     SOONG_LIBRARIES=(
         libcrypto-host.so
         libelf.so
+        libinterceptor.so
     )
 
     binaries="${SOONG_BINARIES[@]/#/${SOONG_HOST_OUT}/bin/}"
