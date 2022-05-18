@@ -31,10 +31,13 @@ EOF
         btfinfo
         build_image
         build_super_image
+        certify_bootimg
         depmod
         dtc
         e2fsck
         e2fsdroid
+        fec
+        fsck.erofs
         img2simg
         interceptor
         interceptor_analysis
