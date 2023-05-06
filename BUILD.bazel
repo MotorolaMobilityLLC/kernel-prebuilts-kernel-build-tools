@@ -1,38 +1,11 @@
-load(":cc.bzl", "import_libraries")
-
-_SHARED_LIBS = glob(["linux-x86/lib64/*.so"])
+package(default_visibility = ["//visibility:public"])
 
 filegroup(
     name = "linux-x86",
     srcs = glob(["linux-x86/**"]),
-    visibility = ["//visibility:public"],
 )
 
 filegroup(
     name = "linux-x86-libs",
-    srcs = _SHARED_LIBS,
-    visibility = ["//visibility:public"],
+    srcs = glob(["linux-x86/lib64/*.so"]),
 )
-
-import_libraries(
-    name = "linux_x86_imported_libs",
-    hdrs = glob(["linux-x86/include/**/*.h"]),
-    shared_libraries = _SHARED_LIBS,
-    strip_include_prefix = "linux-x86/include",
-    target_compatible_with = [
-        "@platforms//os:linux",
-        "@platforms//cpu:x86_64",
-    ],
-    visibility = ["//visibility:public"],
-)
-
-exports_files([
-    "linux-x86/bin/avbtool",
-    "linux-x86/bin/certify_bootimg",
-    "linux-x86/bin/img2simg",
-    "linux-x86/bin/mkdtboimg",
-    "linux-x86/bin/mkuserimg_mke2fs",
-    "linux-x86/bin/stg",
-    "linux-x86/bin/stgdiff",
-    "linux-x86/share/avb/testkey_rsa2048.pem",
-])
