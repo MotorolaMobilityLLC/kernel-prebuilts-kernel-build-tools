@@ -23,9 +23,6 @@ if [ -n ${build_soong} ]; then
 }
 EOF
     SOONG_BINARIES=(
-        abidiff
-        abidw
-        abitidy
         avbtool
         blk_alloc_to_base_fs
         build_image
