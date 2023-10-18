@@ -101,6 +101,10 @@ EOF
     mkdir -p ${share_dir}/avb
     cp -a ${TOP}/external/avb/test/data/testkey_rsa2048.pem ${share_dir}/avb/
 
+    # Copy over the swig library files
+    mkdir -p ${share_dir}/swig
+    cp -a ${TOP}/external/swig/Lib/* ${share_dir}/swig/
+
     # Patch dist dir
     (
       cd ${SOONG_OUT}/dist/
