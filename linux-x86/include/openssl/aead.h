@@ -122,7 +122,7 @@ OPENSSL_EXPORT const EVP_AEAD *EVP_aead_aes_192_gcm(void);
 OPENSSL_EXPORT const EVP_AEAD *EVP_aead_aes_256_gcm(void);
 
 // EVP_aead_chacha20_poly1305 is the AEAD built from ChaCha20 and
-// Poly1305 as described in RFC 8439.
+// Poly1305 as described in RFC 7539.
 OPENSSL_EXPORT const EVP_AEAD *EVP_aead_chacha20_poly1305(void);
 
 // EVP_aead_xchacha20_poly1305 is ChaCha20-Poly1305 with an extended nonce that
@@ -138,10 +138,12 @@ OPENSSL_EXPORT const EVP_AEAD *EVP_aead_aes_128_ctr_hmac_sha256(void);
 // authentication. See |EVP_aead_aes_128_ctr_hmac_sha256| for details.
 OPENSSL_EXPORT const EVP_AEAD *EVP_aead_aes_256_ctr_hmac_sha256(void);
 
-// EVP_aead_aes_128_gcm_siv is AES-128 in GCM-SIV mode. See RFC 8452.
+// EVP_aead_aes_128_gcm_siv is AES-128 in GCM-SIV mode. See
+// https://tools.ietf.org/html/draft-irtf-cfrg-gcmsiv-02
 OPENSSL_EXPORT const EVP_AEAD *EVP_aead_aes_128_gcm_siv(void);
 
-// EVP_aead_aes_256_gcm_siv is AES-256 in GCM-SIV mode. See RFC 8452.
+// EVP_aead_aes_256_gcm_siv is AES-256 in GCM-SIV mode. See
+// https://tools.ietf.org/html/draft-irtf-cfrg-gcmsiv-02
 OPENSSL_EXPORT const EVP_AEAD *EVP_aead_aes_256_gcm_siv(void);
 
 // EVP_aead_aes_128_gcm_randnonce is AES-128 in Galois Counter Mode with
@@ -178,10 +180,6 @@ OPENSSL_EXPORT const EVP_AEAD *EVP_aead_aes_128_ccm_bluetooth(void);
 // v1.0.
 OPENSSL_EXPORT const EVP_AEAD *EVP_aead_aes_128_ccm_bluetooth_8(void);
 
-// EVP_aead_aes_128_ccm_matter is AES-128-CCM with M=16 and L=2 (16-byte tags
-// and 13-byte nonces), as used in the Matter specification.
-OPENSSL_EXPORT const EVP_AEAD *EVP_aead_aes_128_ccm_matter(void);
-
 // EVP_has_aes_hardware returns one if we enable hardware support for fast and
 // constant-time AES-GCM.
 OPENSSL_EXPORT int EVP_has_aes_hardware(void);
@@ -210,19 +208,19 @@ OPENSSL_EXPORT size_t EVP_AEAD_max_tag_len(const EVP_AEAD *aead);
 // AEAD operations.
 
 union evp_aead_ctx_st_state {
-  uint8_t opaque[564];
+  uint8_t opaque[580];
   uint64_t alignment;
 };
 
-// An evp_aead_ctx_st (typedefed as |EVP_AEAD_CTX| in base.h) represents an AEAD
-// algorithm configured with a specific key and message-independent IV.
-struct evp_aead_ctx_st {
+// An EVP_AEAD_CTX represents an AEAD algorithm configured with a specific key
+// and message-independent IV.
+typedef struct evp_aead_ctx_st {
   const EVP_AEAD *aead;
   union evp_aead_ctx_st_state state;
   // tag_len may contain the actual length of the authentication tag if it is
   // known at initialization time.
   uint8_t tag_len;
-};
+} EVP_AEAD_CTX;
 
 // EVP_AEAD_MAX_KEY_LENGTH contains the maximum key length used by
 // any AEAD defined in this header.
@@ -399,14 +397,17 @@ OPENSSL_EXPORT const EVP_AEAD *EVP_AEAD_CTX_aead(const EVP_AEAD_CTX *ctx);
 
 OPENSSL_EXPORT const EVP_AEAD *EVP_aead_aes_128_cbc_sha1_tls(void);
 OPENSSL_EXPORT const EVP_AEAD *EVP_aead_aes_128_cbc_sha1_tls_implicit_iv(void);
-
 OPENSSL_EXPORT const EVP_AEAD *EVP_aead_aes_128_cbc_sha256_tls(void);
 
 OPENSSL_EXPORT const EVP_AEAD *EVP_aead_aes_256_cbc_sha1_tls(void);
 OPENSSL_EXPORT const EVP_AEAD *EVP_aead_aes_256_cbc_sha1_tls_implicit_iv(void);
+OPENSSL_EXPORT const EVP_AEAD *EVP_aead_aes_256_cbc_sha256_tls(void);
+OPENSSL_EXPORT const EVP_AEAD *EVP_aead_aes_256_cbc_sha384_tls(void);
 
 OPENSSL_EXPORT const EVP_AEAD *EVP_aead_des_ede3_cbc_sha1_tls(void);
 OPENSSL_EXPORT const EVP_AEAD *EVP_aead_des_ede3_cbc_sha1_tls_implicit_iv(void);
+
+OPENSSL_EXPORT const EVP_AEAD *EVP_aead_null_sha1_tls(void);
 
 // EVP_aead_aes_128_gcm_tls12 is AES-128 in Galois Counter Mode using the TLS
 // 1.2 nonce construction.
